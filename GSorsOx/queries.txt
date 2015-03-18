@@ -1,0 +1,27 @@
+﻿
+-----Query final-----
+((select avg(common/k),avg(spearman),avg(tau_0),avg(tau_05),avg(tau_1), l1,l2  from toit.experim, toit.group
+where  experim.gr_id = id and nb_users in (2,3,4,5,7) 
+and l2 in ('PluralityMisery') and l1 in  ('CSU','Plurality', 'PluralityMisery')
+group by l1,l2
+) union(select avg(common/k),avg(spearman),avg(tau_0),avg(tau_05),avg(tau_1),l1,l2 from toit.experim, toit.group
+where  experim.gr_id = id and nb_users in (2,3,4,5,7) 
+and l2 in ('CSU') and l1 in  ('CSU','Plurality', 'PluralityMisery')
+group by l1,l2)
+union(select avg(common/k),avg(spearman),avg(tau_0),avg(tau_05),avg(tau_1), l1,l2   from toit.experim, toit.group
+where  experim.gr_id = id and nb_users in (2,3,4,5,7) 
+and l2 in ('Plurality') and l1 in  ('CSU','Plurality', 'PluralityMisery')
+group by l1,l2)
+union(select avg(common/k),avg(spearman),avg(tau_0),avg(tau_05),avg(tau_1),'User',l2   from toit.experim, toit.group
+where  experim.gr_id = id and nb_users in (2,3,4,5,7) 
+and l2 in ('PluralityMisery') and l1 not in  ('CSU','Plurality', 'PluralityMisery')
+group by l2
+) union(select avg(common/k),avg(spearman),avg(tau_0),avg(tau_05),avg(tau_1),'User',l2    from toit.experim, toit.group
+where  experim.gr_id = id and nb_users in (2,3,4,5,7) 
+and l2 in ('CSU') and l1 not in  ('CSU','Plurality', 'PluralityMisery')
+group by l2
+)
+union(select avg(common/k),avg(spearman),avg(tau_0),avg(tau_05),avg(tau_1),'User',l2    from toit.experim, toit.group
+where  experim.gr_id = id and  nb_users in (2,3,4,5,7) 
+and l2 in ('Plurality') and l1 not  in  ('CSU','Plurality', 'PluralityMisery')
+group by l2)) order by l1,l2
